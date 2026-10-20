@@ -14,6 +14,14 @@ library(tidyr)
 library(ggplot2)
 ```
 
+### New feature
+
+Back to programming basics
+```{r}
+print("Hello World")
+```
+
+
 ## s263499 Petros Gioutsos
 
 I need a coffee
@@ -44,3 +52,12 @@ ggplot(mpg, aes(cty, hwy)) +
 ```{r}
 print("hello!")
 ```
+<<<<<<< HEAD
+=======
+
+### New Analysis
+
+```{r}
+print("hello!")
+```
+>>>>>>> 001c3359b56193a7469e3b9258fdb8d756087c72
