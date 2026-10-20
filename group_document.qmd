@@ -22,6 +22,13 @@ I need a coffee
 message('Hey!')
 ```
 
+### Some DNA
+
+```{r}
+nucleotides <- c("a", "c", "g", "t")
+sample(nucleotides, size = 100, replace = TRUE)
+```
+
 ## s263483 Grete Paat
 
 Hello! My name is Grete Paat.
@@ -40,7 +47,7 @@ ggplot(mpg, aes(cty, hwy)) +
 ```
 
 ## s263753 Shirley Lois
+
 ```{r}
 print("hello!")
 ```
-
