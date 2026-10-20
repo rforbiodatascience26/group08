@@ -3,3 +3,11 @@ title: "Group Document"
 format: html
 editor: visual
 ---
+
+## s263740 Ana García
+
+## s263499 Petros Gioustos
+
+## s263483 Grete Paat
+
+## s263753 Shirley Lois
