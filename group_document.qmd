@@ -6,7 +6,7 @@ editor: visual
 
 ## s263740 Ana García
 
-\*Load the required libraries for the exercises
+Load the required libraries for the exercises!
 
 ```{r}
 # install.packages("tidyverse")
