@@ -30,6 +30,12 @@ I need a coffee
 message('Hey!')
 ```
 
+### New Feature
+
+```{r}
+
+```
+
 ## s263483 Grete Paat
 
 Hello! My name is Grete Paat.
