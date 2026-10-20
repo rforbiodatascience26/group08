@@ -4,45 +4,55 @@ author: "Grete Paat (s263483), Shirley Lois Gundugollu (s263753), Petros Gioutso
 editor: visual
 ---
 
-# Lab 7: Collaborative Bio Data Science using git and GitHub via RStudio
+[Lab 7: Collaborative Bio Data Science using git and GitHub via RStudio](https://r4bds.github.io/lab07.html)
 
-[link to lab 7](https://r4bds.github.io/lab07.html)
+## Background
 
-# “PCA tidyverse style” by Claus O. Wilke, Professor of Integrative Biology
+This is a micro-report based on a blog post: [“PCA tidyverse style”](https://clauswilke.com/blog/2020/09/07/pca-tidyverse-style/) by Claus O. Wilke, Professor of Integrative Biology.
 
-[link to post](https://clauswilke.com/blog/2020/09/07/pca-tidyverse-style/)
+> *Doing a PCA in R is easy: Just run the function `prcomp()` on your matrix of scaled numeric predictor variables. There’s just one problem, however. The result is an object of class `prcomp` that doesn’t fit nicely into the tidyverse framework, e.g. for visualization. While it’s reasonably easy to extract the relevant info with [some base-R manipulations,](https://wilkelab.org/classes/SDS348/2020_spring/worksheets/class9_solutions.html) I’ve never been happy with this approach. But now, I’ve realized that all the necessary functions to do this tidyverse-style are available in the broom package.*
+>
+> \- Claus O. Wilke
 
-Doing a PCA in R is easy: Just run the function `prcomp()` on your matrix of scaled numeric predictor variables. There’s just one problem, however. The result is an object of class `prcomp` that doesn’t fit nicely into the tidyverse framework, e.g. for visualization. While it’s reasonably easy to extract the relevant info with [some base-R manipulations,](https://wilkelab.org/classes/SDS348/2020_spring/worksheets/class9_solutions.html) I’ve never been happy with this approach. But now, I’ve realized that all the necessary functions to do this tidyverse-style are available in the broom package.
+## Aim
 
-For our PCA example, we’ll need the packages tidyverse and broom. Note that as of this writing, we need the current development version of broom [because of a bug](https://github.com/tidymodels/broom/issues/923) in `tidy.prcomp()`. We’ll also use the cowplot package for plot themes.
+The goal of this assignment is to use "tidyverse" and "broom" packages for PCA.
 
 ### Load libraries
+
+To fulfill this objective, the following libraries are loaded in the working environment.
 
 ```{r}
 library(tidyverse)
 library(broom)  # devtools::install_github("tidymodels/broom")
-library(cowplot)
+library(cowplot) # for plot themes
 ```
 
-We’ll be analyzing the `biopsy` dataset, which comes originally from the MASS package. It is a breast cancer dataset from the University of Wisconsin Hospitals, Madison from Dr. William H. Wolberg. He assessed biopsies of breast tumors for 699 patients; each of nine attributes was scored on a scale of 1 to 10. The true outcome (benign/malignant) is also known.
-
 ### Load data
+
+We will analyze the `biopsy` dataset from the MASS package, which contains breast tumor biopsy data collected by Dr. William H. Wolberg at the University of Wisconsin Hospitals in Madison. Breast tumor biopsies from a total of 699 patients were analyzed. The dataset contains nine attributes, each scored on a scale of 1 to 10. Each tumor’s diagnosis (benign/malignant) is also recorded.
+
+The raw data is publicly available and is fetched into the working environment.
 
 ```{r}
 biopsy <- read_csv("https://wilkelab.org/classes/SDS348/data_sets/biopsy.csv")
 ```
 
-In general, when performing PCA, we’ll want to do (at least) three things:
+## PCA
 
-1.  Look at the data in PC coordinates.
+> *In general, when performing PCA, we’ll want to do (at least) three things:*
+>
+> 1.  *Look at the data in PC coordinates.*
+>
+> 2.  *Look at the rotation matrix.*
+>
+> 3.  *Look at the variance explained by each PC.*
+>
+> \- Claus O. Wilke
 
-2.  Look at the rotation matrix.
+### Look at the data in PC coordinates
 
-3.  Look at the variance explained by each PC.
-
-Let’s do these three things in turn.
-
-## Look at the data in PC coordinates
+!!!!! LILY FROM HERE IT IS UNEDITED !!!!!
 
 We start by running the PCA and storing the result in a variable `pca_fit`. There are two issues to consider here. First, the `prcomp()` function can only deal with numeric columns, so we need to remove all non-numeric columns from the data. This is straightforward using the `where(is.numeric)` tidyselect construct. Second, we normally want to scale the data values to unit variance before PCA. We do so by using the argument `scale = TRUE` in `prcomp()`.
 
@@ -74,7 +84,7 @@ pca_fit %>%
   theme_half_open(12) + background_grid()
 ```
 
-## Look at the data in PC coordinates
+### Look at the rotation matrix
 
 Next, we plot the rotation matrix. The rotation matrix is stored as `pca_fit$rotation`, but here we’ll extract it using the `tidy()` function from broom. When applied to `prcomp` objects, the `tidy()` function takes an additional argument `matrix`, which we set to `matrix = "rotation"` to extract the rotation matrix.
 
@@ -108,7 +118,7 @@ pca_fit %>%
   theme_minimal_grid(12)
 ```
 
-## Look at the variance explained by each PC
+### Look at the variance explained by each PC
 
 Finally, we’ll plot the variance explained by each PC. We can again extract this information using the `tidy()` function from broom, now by setting the `matrix` argument to `matrix = "eigenvalues"`.
 
