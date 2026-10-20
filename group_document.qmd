@@ -22,15 +22,13 @@ print("Hello World")
 ```
 
 
-=======
 ## s263499 Petros Gioutsos
+
 I need a coffee
 
 ```{r}
 message('Hey!')
 ```
-
->>>>>>> 5274337740b8c0403b41ebf6d45333d80eb5faa5
 
 ## s263483 Grete Paat
 
@@ -50,3 +48,7 @@ ggplot(mpg, aes(cty, hwy)) +
 ```
 
 ## s263753 Shirley Lois
+```{r}
+print("hello!")
+```
+
