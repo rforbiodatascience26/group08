@@ -40,3 +40,7 @@ ggplot(mpg, aes(cty, hwy)) +
 ```
 
 ## s263753 Shirley Lois
+```{r}
+print("hello!")
+```
+
