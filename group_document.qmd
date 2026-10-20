@@ -17,10 +17,10 @@ library(ggplot2)
 ### New feature
 
 Back to programming basics
+
 ```{r}
 print("Hello World")
 ```
-
 
 ## s263499 Petros Gioutsos
 
@@ -61,15 +61,6 @@ ggplot(data = datasets::Puromycin,
 ```
 
 ## s263753 Shirley Lois
-
-
-```{r}
-print("hello!")
-```
-
-
-### New Analysis
-
 
 ```{r}
 print("hello!")
