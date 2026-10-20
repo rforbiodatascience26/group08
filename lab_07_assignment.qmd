@@ -123,7 +123,8 @@ Now in the context of a plot.
 # Create scatter plot
 pca_fit |> 
   tidy(matrix = "eigenvalues") |> 
-  ggplot(aes(PC, percent)) +
+  ggplot(aes(x = PC, 
+             y = percent)) +
   geom_col(fill = "#ED9FCC", 
            alpha = 0.8) +
   scale_x_continuous(breaks = 1:9) +
