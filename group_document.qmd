@@ -16,4 +16,19 @@ message('Hey!')
 
 ## s263483 Grete Paat
 
+Hello! My name is Grete Paat.
+
+Here's a plot:
+
+```{r}
+library("tidyverse")
+
+# plot from: https://ggplot2.tidyverse.org/articles/ggplot2.html
+ggplot(mpg, aes(cty, hwy)) +
+  # to create a scatterplot
+  geom_point() +
+  # to fit and overlay a loess trendline
+  geom_smooth(formula = y ~ x, method = "lm")
+```
+
 ## s263753 Shirley Lois
