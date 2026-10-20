@@ -6,7 +6,15 @@ editor: visual
 
 ## s263740 Ana García
 
-## s263499 Petros Gioustos
+\*Load the required libraries for the exercises
+
+```{r}
+# install.packages("tidyverse")
+library(tidyr)
+library(ggplot2)
+```
+
+## s263499 Petros Gioutsos
 
 ## s263483 Grete Paat
 
