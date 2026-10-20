@@ -113,22 +113,22 @@ pca_fit %>%
 Finally, we’ll plot the variance explained by each PC. We can again extract this information using the `tidy()` function from broom, now by setting the `matrix` argument to `matrix = "eigenvalues"`.
 
 ```{r}
-pca_fit %>%
+pca_fit |> 
   tidy(matrix = "eigenvalues")
 ```
 
 Now in the context of a plot.
 
 ```{r}
-pca_fit %>%
-  tidy(matrix = "eigenvalues") %>%
+# Create scatter plot
+pca_fit |> 
+  tidy(matrix = "eigenvalues") |> 
   ggplot(aes(PC, percent)) +
-  geom_col(fill = "#56B4E9", alpha = 0.8) +
+  geom_col(fill = "#ED9FCC", 
+           alpha = 0.8) +
   scale_x_continuous(breaks = 1:9) +
-  scale_y_continuous(
-    labels = scales::percent_format(),
-    expand = expansion(mult = c(0, 0.01))
-  ) +
+  scale_y_continuous(labels = scales::percent_format(),
+                     expand = expansion(mult = c(0, 0.01))) +
   theme_minimal_hgrid(12)
 ```
 
