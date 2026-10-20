@@ -6,7 +6,13 @@ editor: visual
 
 ## s263740 Ana García
 
-## s263499 Petros Gioustos
+## s263499 Petros Gioutsos
+I need a coffee
+
+```{r}
+message('Hey!')
+```
+
 
 ## s263483 Grete Paat
 
