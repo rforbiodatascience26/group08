@@ -56,23 +56,30 @@ As an alternative to `scale = TRUE`, we could also have scaled the data by expli
 
 ```{r}
 pca_fit <- biopsy |>  
-  select(where(is.numeric)) |>  # retain only numeric columns
-  scale() |>  # scale data
-  prcomp() |>  # do PCA
+  select(where(is.numeric)) |>    # retain only numeric columns
+  scale() |>                      # scale data
+  prcomp() |>                     # do PCA
 ```
 
 Now, we want to plot the data in PC coordinates. In general, this means combining the PC coordinates with the original dataset, so we can color points by categorical variables present in the original data but removed for the PCA. We do this with the `augment()` function from broom, which takes as arguments the fitted model and the original data. The columns containing the fitted coordinates are called `.fittedPC1`, `.fittedPC2`, etc.
 
 ```{r}
-pca_fit %>%
-  augment(biopsy) |>  # add original dataset back in
-  ggplot(aes(.fittedPC1, .fittedPC2, color = outcome)) + 
+pca_fit |> 
+  augment(biopsy) |>              # add original dataset back in
+  ggplot(aes(
+    .fittedPC1, 
+    .fittedPC2, 
+    color = outcome)
+    ) + 
   geom_point(size = 1.5) +
   scale_color_manual(
-    values = c(malignant = "#FF87BF", benign = "#71D2F5")
+    values = c(malignant = "#FF87BF",
+               benign = "#71D2F5")
   ) +
-  theme_half_open(12) + background_grid() + 
+  theme_half_open(12) + 
+  background_grid() + 
   theme_grey()
+
 ```
 
 ## Look at the data in PC coordinates
@@ -114,23 +121,22 @@ pca_fit %>%
 Finally, we’ll plot the variance explained by each PC. We can again extract this information using the `tidy()` function from broom, now by setting the `matrix` argument to `matrix = "eigenvalues"`.
 
 ```{r}
-pca_fit |> 
+pca_fit %>%
   tidy(matrix = "eigenvalues")
 ```
 
 Now in the context of a plot.
 
 ```{r}
-# Create scatter plot
-pca_fit |> 
-  tidy(matrix = "eigenvalues") |> 
-  ggplot(aes(x = PC, 
-             y = percent)) +
-  geom_col(fill = "#ED9FCC", 
-           alpha = 0.8) +
+pca_fit %>%
+  tidy(matrix = "eigenvalues") %>%
+  ggplot(aes(PC, percent)) +
+  geom_col(fill = "#56B4E9", alpha = 0.8) +
   scale_x_continuous(breaks = 1:9) +
-  scale_y_continuous(labels = scales::percent_format(),
-                     expand = expansion(mult = c(0, 0.01))) +
+  scale_y_continuous(
+    labels = scales::percent_format(),
+    expand = expansion(mult = c(0, 0.01))
+  ) +
   theme_minimal_hgrid(12)
 ```
 
