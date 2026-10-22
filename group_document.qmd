@@ -83,3 +83,16 @@ print("hello!")
 ```{r}
 print("Hello world, this is me, life should be hum hum yeah, fun um yeah, fun for everyone")
 ```
+
+#### New analysis 
+
+```{r}
+library("tidyverse")
+ggplot(data = datasets::beaver1, aes(x = factor(activ), y = temp, color = factor(activ))) + 
+  geom_boxplot() + 
+  labs(title = "Body Temp vs. Activity",
+    subtitle = "Beaver observation study n°1",
+    x = "Activity", y = "Body Temperature",
+    legend = "Activity observed",
+    color = "Activity level observed")
+```
