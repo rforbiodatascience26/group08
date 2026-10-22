@@ -16,7 +16,7 @@ This is a micro-report based on a blog post: [“PCA tidyverse style”](https:/
 
 ## Aim
 
-The goal of this assignment is to use "tidyverse" and "broom" packages for PCA.
+The goal of this assignment is to use "tidyverse" and "broom" packages to perform PCA in RStudio.
 
 ### Load libraries
 
@@ -50,11 +50,13 @@ biopsy <- read_csv("https://wilkelab.org/classes/SDS348/data_sets/biopsy.csv")
 >
 > \- Claus O. Wilke
 
-### Look at the data in PC coordinates
+### Looking at the data in PC coordinates
 
-!!!!! LILY FROM HERE IT IS UNEDITED !!!!!
+We start by running the PCA and storing the result in a variable `pca_fit`. There are two issues to consider here:
 
-We start by running the PCA and storing the result in a variable `pca_fit`. There are two issues to consider here. First, the `prcomp()` function can only deal with numeric columns, so we need to remove all non-numeric columns from the data. This is straightforward using the `where(is.numeric)` tidyselect construct. Second, we normally want to scale the data values to unit variance before PCA. We do so by using the argument `scale = TRUE` in `prcomp()`.
+-   First, the `prcomp()` function can only deal with numeric columns, so we need to remove all non-numeric columns from the data. This is straightforward using the `where(is.numeric)` tidyselect construct.
+
+-   Second, we normally want to scale the data values to unit variance before PCA. We do so by using the argument `scale = TRUE` in `prcomp()`.
 
 ```{r}
 pca_fit <- biopsy |>  
@@ -71,22 +73,23 @@ pca_fit <- biopsy |>
   prcomp()                        # do PCA
 ```
 
-Now, we want to plot the data in PC coordinates. In general, this means combining the PC coordinates with the original dataset, so we can color points by categorical variables present in the original data but removed for the PCA. We do this with the `augment()` function from broom, which takes as arguments the fitted model and the original data. The columns containing the fitted coordinates are called `.fittedPC1`, `.fittedPC2`, etc.
+Now, we want to plot the data in PC coordinates. In general, this means combining the PC coordinates with the original dataset, so we can color points according to categorical variables present in the original data that were removed for the PCA. In our case, the pathological outcome of the biopsied tumors. We do this with the `augment()` function from broom, which takes as arguments the fitted model and the original data. The columns containing the fitted coordinates are called `.fittedPC1`, `.fittedPC2`, etc.
 
 ```{r}
 pca_fit |> 
   augment(biopsy) |>              # add original dataset back in
   ggplot(aes(.fittedPC1, 
              .fittedPC2, 
-             color = outcome)) + 
+             color = outcome)) +# add the color code to discriminate outcome
   geom_point(size = 1.5) +
   scale_color_manual(values = c(malignant = "#FF87BF", 
                                 benign = "#71D2F5")) +
-  theme_half_open(12) + 
-  background_grid()
+  theme_half_open(12) +         # clean appreance without contour grids 
+  background_grid() +
+  labs(title = "Fig.1: Benign and malignant samples scattered \n according to PC1 and PC2")
 ```
 
-### Look at the rotation matrix
+### Looking at the rotation matrix
 
 Next, we plot the rotation matrix. The rotation matrix is stored as `pca_fit$rotation`, but here we’ll extract it using the `tidy()` function from broom. When applied to `prcomp` objects, the `tidy()` function takes an additional argument `matrix`, which we set to `matrix = "rotation"` to extract the rotation matrix.
 
@@ -104,12 +107,12 @@ arrow_style <- arrow(
   angle = 20, ends = "first", type = "closed", length = grid::unit(8, "pt")
 )
 
-# plot rotation matrix
+# plot rotation matrix and re-arrange columns according to PC n°
 pca_fit |>
   tidy(matrix = "rotation") |>
-  pivot_wider(names_from = "PC", 
+  pivot_wider(names_from = "PC",        # adds columns corresponding to each PC
               names_prefix = "PC", 
-              values_from = "value") |>
+              values_from = "value") |> # rewrites rotation values in each column
   ggplot(aes(PC1, PC2)) +
   geom_segment(xend = 0, 
                yend = 0, 
@@ -123,11 +126,12 @@ pca_fit |>
   coord_fixed() +
   theme_linedraw() +
   labs(
-    title = "PCA - Rotation Matrix plot") +
+    title = "Fig.2: PCA - Rotation Matrix plot") +
   theme(
     plot.title = element_text(
       hjust = 0.5))
   
+
 ```
 
 ### Look at the variance explained by each PC
@@ -142,24 +146,28 @@ pca_fit %>%
 Now in the context of a plot.
 
 ```{r}
+
+# Create a bar plot binned by PC
 pca_fit %>%
   tidy(matrix = "eigenvalues") %>%
   ggplot(aes(PC, percent)) +
   geom_col(fill = "#56B4E9", alpha = 0.8) +
-  scale_x_continuous(breaks = 1:9) +
+  scale_x_continuous(breaks = 1:9) +          # defining the labels for each PC 1-9
   scale_y_continuous(
     labels = scales::percent_format(),
     expand = expansion(mult = c(0, 0.01))
   ) +
-  theme_minimal_hgrid(12)
-# Create scatter plot
+  theme_minimal_hgrid(12)                    # lighter grid for cleaner visuals
+
+
+# Same but with a title
 pca_fit |> 
   tidy(matrix = "eigenvalues") |> 
   ggplot(aes(x = PC, 
              y = percent)) +
   geom_col(fill = "#ED9FCC", 
            alpha = 0.8) +
-  labs(title = "% Variance explained by each PC") +
+  labs(title = "Fig3: % Variance explained by each PC") +
   scale_x_continuous(breaks = 1:9) +
   scale_y_continuous(labels = scales::percent_format(),
                      expand = expansion(mult = c(0, 0.01))) +
@@ -167,4 +175,4 @@ pca_fit |>
   theme(plot.title = element_text(hjust = 0.5))
 ```
 
-The first component captures 65% of the variation in the data and, as we can see from the first plot in this post, nicely separates the benign samples from the malignant samples.
+The first component captures 65% of the variation in the data and, as we can see from the first plot in this post, nicely separates the benign samples from the malignant samples. According to the eigenvalues data, 74% of the variance in the dataset is explained by the first to principal components, which is qualitatively illustrated with Fig.1.
