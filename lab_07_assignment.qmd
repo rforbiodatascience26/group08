@@ -76,6 +76,8 @@ pca_fit <- biopsy |>
 Now, we want to plot the data in PC coordinates. In general, this means combining the PC coordinates with the original dataset, so we can color points according to categorical variables present in the original data that were removed for the PCA. In our case, the pathological outcome of the biopsied tumors. We do this with the `augment()` function from broom, which takes as arguments the fitted model and the original data. The columns containing the fitted coordinates are called `.fittedPC1`, `.fittedPC2`, etc.
 
 ```{r}
+#| label: fig-1
+#| fig-cap: "PC1-PC2 plot"
 pca_fit |> 
   augment(biopsy) |>              # add original dataset back in
   ggplot(aes(.fittedPC1, 
@@ -175,4 +177,4 @@ pca_fit |>
   theme(plot.title = element_text(hjust = 0.5))
 ```
 
-The first component captures 65% of the variation in the data and, as we can see from the first plot in this post, nicely separates the benign samples from the malignant samples. According to the eigenvalues data, 74% of the variance in the dataset is explained by the first to principal components, which is qualitatively illustrated with Fig.1.
+The first component captures 65% of the variation in the data and, as we can see from the first plot in this post, nicely separates the benign samples from the malignant samples. According to the eigenvalues data, 74% of the variance in the dataset is explained by the first to principal components, which is qualitatively illustrated with @fig-1.
